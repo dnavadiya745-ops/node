@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-4xl">
+        <header
+          class="mb-10 flex flex-col items-center border-b border-gray-200 pb-10 text-center sm:flex-row sm:text-left"
+        >
+          <img
+            class="h-32 w-32 border-2 border-gray-300 rounded-full object-cover shadow-md ring-4 ring-white"
+            src="<%= user.image %>"
+            alt="user"
+          />
+ 
+          <div class="mt-6 sm:mt-0 sm:ml-8 flex-1">
+            <div class="flex flex-col items-center justify-between sm:flex-row">
+              <h1 class="text-3xl font-extrabold text-gray-900"><%= user.fullname %></h1>
+              <div class="mt-4 flex space-x-3 sm:mt-0">
+               <a href="/editprofile" class="text-center bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                 <button>
+                  Edit Profile
+                </button>
+               </a>
+                <a
+                  href="/logout"
+                  class="text-center rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                >
+                  <button>Logout</button>
+                </a>
+              </div>
+            </div>
+ 
+            <!-- email -->
+            <p class="mt-1 text-lg text-gray-500 font-medium italic"><%= user.email %></p>
+ 
+            <!-- NEW: username -->
+            <p class="text-gray-600 text-sm">
+              Username: <span class="font-semibold"><%= user.username %></span>
+            </p>
+ 
+            <!-- NEW: mobile number -->
+            <p class="text-gray-600 text-sm">
+              Mobile: <span class="font-semibold"><%= user.phone %></span>
+            </p>
+ 
+            <!-- NEW: total posts -->
+            <p class="text-gray-600 text-sm">
+              Total Posts: <span class="font-semibold">10</span>
+            </p>
+ 
+            <a
+              href="/post"
+              class="bg-orange-500 text-white font-semibold px-3 py-1 my-2 inline-block rounded-xl text-xl active:scale-95 active:bg-orange-200"
+            >
+              Create Post
+            </a>
+          </div>
+        </header>
+ 
+        <section>
+          <h3
+            class="mb-4 text-sm font-bold uppercase tracking-wider text-gray-400"
+          >
+            Recent Post
+          </h3>
+ 
+          <div class="flex flex-wrap items-center justify-center gap-4">
+             
+              <% user.posts.map((data)=>{ %>
+
+            <div class="w-1/2 top-8">
+              <article
+                class="overflow-hidden rounded-2xl border-2 border-dashed border-gray-200 bg-white shadow-sm transition-all"
+              >
+                <div class="relative h-full w-full bg-gray-100">
+                  <img
+                    src="/uploads/<%= data.imgurl %>"
+                    alt="imge"
+                    class="h-full w-full object-cover"
+                  />
+                </div>
+ 
+                <div class="p-6">
+                  <h2 class="text-2xl font-bold text-gray-900 leading-tight">
+                    <%= data.title %>
+                  </h2>
+                  <p class="mt-3 text-gray-600 leading-relaxed">
+                    <%= data.description %>
+                  </p>
+ 
+                  <!-- <div
+                  class="mt-6 flex items-center pt-4 border-t border-gray-100"
+                >
+                  <div class="h-8 w-8 rounded-full bg-gray-200"></div>
+                  <div class="ml-3">
+                    <p class="text-xs font-bold text-gray-900">fname</p>
+                    <p class="text-[10px] text-gray-400">Just now</p>
+                  </div>
+                </div> -->
+                </div>
+              </article>
+              <div>
+                <i class="fa fa-close"></i>
+              </div>
+            </div>
+
+
+              <% }) %>
+
+           
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
