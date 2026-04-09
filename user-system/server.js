@@ -135,6 +135,18 @@ app.post("/edit", auth, async (req, res) => {
 
         res.redirect("/profile");
 })
+
+app.get("/delete/:id", auth ,async(req,res)=>{
+ let user = await userModel.findOne({email : req.user.email});
+
+  await postModel.findOneAndDelete({_id : req.params.id});
+
+  let postNumber = user.posts.indexOf(req.params.id);
+  user.posts.splice(postNumber,1);
+  await user.save();
+
+  res.redirect("/profile");
+});
 // middleware functions
 function auth(req, res, next) {
 
