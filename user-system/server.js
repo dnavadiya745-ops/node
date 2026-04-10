@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const postModel = require("./Models/post.model");
 const path = require("path");
 const upload = require("./config/multer")
+const morgan = require("morgan")
 
 
 // image folder --> image --> aa.jpg (laptop)
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-
+app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");

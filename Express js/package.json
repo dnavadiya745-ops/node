@@ -2,7 +2,7 @@
   "dependencies": {
     "express": "^5.2.1"
   },
-  "name": "express-js",
+  "name": "express",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
