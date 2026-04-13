@@ -2,12 +2,17 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const cors = require("cors");
-const db = require("./config/db")
+const db = require("./config/db");
+const cookieParser = require("cookie-parser");
+//Route
+const userRouter = require("./routes/web/v1/user.route");
+
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
+app.use(cookieParser());
 app.set(db());
 
 // cors origin--> allow only that website that mention into origin group,ex.backend only res when localhost 3002 send request, other than give cors error
@@ -24,6 +29,7 @@ PORT = process.env.PORT;
 app.get("/",(req,res)=>{
     res.status(401).json({message : "Access Denied!...."});
 });
+app.use("/user",userRouter);// localhost:3005/user/register
 
 app.listen(PORT, ()=>{
     console.log(`server is running on PORT ${PORT}`);

@@ -24,7 +24,8 @@ let userSchema = mongoose.Schema({
     role : {
         type : String,
         enum : ["user","admin"],
-        default : user,
+        default : "user",
+       
     }
 })
 
@@ -38,13 +39,14 @@ userSchema.methods.generateAuthToken =function(){
 
 // bcrypt
 //hash(static)
-userSchema.static.hashpassword = async function(){
+userSchema.statics.hashPassword = async function(password){
     let hash = await bcrypt.hash(password,10);
     return hash;
 }
 //compaire(methods)
-userSchema.methods.comparepassword = async function(){
+userSchema.methods.comparepassword = async function(password){
     let result = await bcrypt.compare(password,this.password);
+     return result;
 }; // this.password --> database user's password
 
 module.exports = mongoose.model("user",userSchema);

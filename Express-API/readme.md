@@ -39,3 +39,8 @@ Response ←──────────────────────�
 9. MongoDB saves the document
         ↓
 10. Controller sends: 201 { success: true, data: { ... }, message: "Product created" }
+
+## API Created
+1. User register --> Post --> Username, password, Email
+2. User Login --> Post --> Email, Password
+3. User Profile --> Get
