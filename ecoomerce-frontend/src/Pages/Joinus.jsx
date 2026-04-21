@@ -1,29 +1,41 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const JoinUs = () => {
 
     const [username, setusername] = useState("")
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
-    const userdata = { username: username, email: email, password: password }
+    const [error, seterror] = useState()
 
+  const navigate = useNavigate();
+    
+    const userdata = { username: username, email: email, password: password }
     const submitform = async () => {
         console.log("Form Submited... ");
         console.log(userdata)
 
-        let response = await axios.post(`${import.meta.env.ITE_BASE_URL}/user/register`,  userdata )
+        try {
+            let response = await axios.post(`${import.meta.env.VITE_BASE_URL}/user/register`, userdata)
 
-        if (response.status === 200) {
-            const data = response;
+            if (response.status === 200) {
+                const data = response;
 
-            localStorage.setItem("token", data.token);
+                localStorage.setItem("token", data.token);
+
+                navigate("/login")
+            }
+
+            setusername("")
+            setemail("")
+            setpassword("")
+        } catch (err) {
+            console.log(error.response)
+            let Err = err.response?.data?.error
+            console.log(err);
+            seterror(Err);
         }
-
-        setusername("")
-        setemail("")
-        setpassword("")
 
     }
     return (
@@ -35,8 +47,15 @@ const JoinUs = () => {
                     Create Account 🚀
                 </h2>
 
-                <form className="space-y-4" onSubmit={(e)=> e.preventDefault(submitform())}>
-                    
+                <form className="space-y-4" onSubmit={(e) => e.preventDefault(submitform())}>
+
+                    {error && <div>
+                        {error.map((val, index) => {
+                            return <p key={index} className="bg-red-100 rounded-xl p-2 w-full text-red-400 font-normal mb-2 text-center">{val.msg}</p>
+                        })}
+                    </div>
+
+                    }
 
                     <input
                         type="text"
