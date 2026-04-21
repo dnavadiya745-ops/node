@@ -8,7 +8,7 @@ module.exports.registerUser = async(req,res) =>{
         return res.status(400).json({error: error.array()})
     }
 
-    const {username,email,password} = req.body;
+    const {username,email,password,role} = req.body;
 
      let isExist = await userModel.findOne({email : email});
      if (isExist) {
@@ -17,7 +17,7 @@ module.exports.registerUser = async(req,res) =>{
 
     const hashPassword = await userModel.hashPassword(password);
 
-const user = await userService.createUser({username,email,password:hashPassword});
+const user = await userService.createUser({username,email,password:hashPassword,role});
 
 let token = await user.generateAuthToken();
 res.status(200).json({ token,user});
@@ -51,4 +51,20 @@ module.exports.loginUser = async(req,res)=>{
 
 module.exports.profile = (req,res)=>{
   res.status(200).json({ user: req.user});
+}
+module.exports.logout = (req,res) =>{
+    res.clearCookie("token");
+    res.status(200).json({message:"Logout Sucessfully"});
+}
+
+module.exports.updateUser = async (req,res) =>{
+    const userId = req.user.id;
+    console.log(userId);
+
+    const {username, email} = req.body;
+
+    const updateUser = await userService.updateUser({userId,username,email});
+
+    res.status(200).json({message:"user updated successfully..",updateUser});
+
 }

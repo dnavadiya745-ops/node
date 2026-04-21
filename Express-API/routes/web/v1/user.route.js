@@ -19,4 +19,10 @@ router.post("/login",[body('email').isEmail().withMessage("Enter Valid Email"),
 // show profile
 router.get("/profile",middleware.authUser, userController.profile)
 
+//log out profile
+router.get("/logout", middleware.authUser,userController.logout)
+
+//update profile
+router.put("/update",middleware.authUser,userController.updateUser)
+
 module.exports =router;
