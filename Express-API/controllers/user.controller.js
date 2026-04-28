@@ -67,4 +67,31 @@ module.exports.updateUser = async (req,res) =>{
 
     res.status(200).json({message:"user updated successfully..",updateUser});
 
+};
+
+//forget password --  send email for reset password
+module.exports.forgetPassword = async(req,res)=>{
+    try {
+        const {email} = req.body;
+
+        await userService.forgetPassword(email);
+        return res.status(200).json({message: "Email Send Your Register Mail Successfully .Check Your Mail"});
+
+    } catch (error) {
+       return res.status(400).json({message: error.message});
+    }
+}
+
+//reset password
+module.exports.resetpassword = async(req,res) =>{
+    try {
+       const token = req.params.token;
+       const {newpassword} = req.body;
+       
+       await userService.resetpassword({token,newpassword});
+
+       return res.status(200).json({message: "Password Reset Successfully....!!!"})
+    } catch (error) {
+        return res.status(400).json({message: error.message})
+    }
 }

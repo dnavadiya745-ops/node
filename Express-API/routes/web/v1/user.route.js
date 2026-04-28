@@ -25,4 +25,10 @@ router.get("/logout", middleware.authUser,userController.logout)
 //update profile
 router.put("/update",middleware.authUser,userController.updateUser)
 
-module.exports =router;
+// forget password
+router.post("/forget-password",userController.forgetPassword)
+
+//reset password
+router.post("/reset-password/:token",userController.resetpassword);
+
+module.exports = router;

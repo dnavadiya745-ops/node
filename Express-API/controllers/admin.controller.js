@@ -1,5 +1,5 @@
 const userModel = require("../models/user.model");
-const adminservice = require("../services/admin.services");
+const adminservice = require("../services/admin.service");
 const { validationResult } = require("express-validator");
 
 // show all user logic
@@ -29,25 +29,23 @@ module.exports.dltuser = async (req,res)=>{
     }
 }
 
-// manager creation logic
-module.exports.registermanager = async(req,res) =>{
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-        return res.status(400).json({error: error.array()})
+// update user role
+module.exports.updateuserrole =  async(req,res) =>{
+    try {
+       const userId = req.params.id;
+       const { role } = req.body;
+
+       if (req.user.role !== 'admin') {
+         return res.status(401).json({ message: "Access Denied......." });
+        }
+        const user  = await adminservice.updateuserrole({ userId, role });
+         if (!user) {
+            throw new Error ("User Not Found !!");
+         }
+
+         return res.status(200).json({ message: "User Role Updated Successfully", user });
+       
+    } catch (error) {
+        return res.status(400).json({error: error.message})
     }
-
-    const {username,email,password,role} = req.body;
-
-     let isExist = await userModel.findOne({email : email});
-     if (isExist) {
-        return res.status(400).json({ message :"user is already exist"})
-     }
-
-    const hashPassword = await userModel.hashPassword(password);
-
-const user = await adminservice.createmanager({username,email,password:hashPassword,role});
-
-let token = await user.generateAuthToken();
-res.status(200).json({ token,user});
-    
-};
+}
